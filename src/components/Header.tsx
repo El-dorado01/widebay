@@ -18,15 +18,15 @@ export default function Header() {
 
             {/* Desktop Navigation – tight to the logo */}
             <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-accent-foreground">
-              <a href="/" className="hover:text-primary transition">
+              <Link href="/" className="hover:text-primary transition">
                 Homepage
-              </a>
-              <a href="/contact" className="hover:text-primary transition">
+              </Link>
+              <Link href="/contact" className="hover:text-primary transition">
                 Contact us
-              </a>
-              <a href="/about" className="hover:text-primary transition">
+              </Link>
+              <Link href="/about" className="hover:text-primary transition">
                 About us
-              </a>
+              </Link>
             </nav>
           </div>
 
