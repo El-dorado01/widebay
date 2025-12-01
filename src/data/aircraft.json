@@ -1,0 +1,13 @@
+{
+  "Beechcraft": ["King Air 200", "King Air 250", "King Air 350", "1900D"],
+  "Pilatus": ["PC-12", "PC-12 NG", "PC-12 NGX", "PC-24"],
+  "Cessna": [
+    "208 Caravan",
+    "208B Grand Caravan",
+    "Citation Mustang",
+    "Citation CJ4"
+  ],
+  "Bell": ["407", "429", "505", "412"],
+  "Airbus Helicopters": ["H125", "H130", "H135", "H145"],
+  "Leonardo": ["AW139", "AW169", "AW189"]
+}
