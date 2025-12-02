@@ -224,8 +224,9 @@ export default function PartsSearchBar() {
               className="absolute top-full left-0 right-0 mt-3 rounded-2xl bg-white shadow-2xl border p-8 text-center"
             >
               <p className="text-muted-foreground">
-                No parts found for "
-                <span className="font-medium text-foreground">{query}</span>"
+                No parts found for &quot;
+                <span className="font-medium text-foreground">{query}</span>
+                &quot;
               </p>
               <Button variant="link" className="mt-4">
                 Contact our AOG team for help →

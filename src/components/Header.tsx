@@ -5,7 +5,6 @@ import {
   Search,
   ShoppingCart,
   Menu,
-  Phone,
   X,
   ChevronRightIcon,
 } from "lucide-react";
