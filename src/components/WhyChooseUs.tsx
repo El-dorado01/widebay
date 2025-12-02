@@ -84,7 +84,7 @@ export default function WhyChooseUs() {
           transition={{ duration: 0.7 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
+          <h2 className="text-2xl lg:text-3xl font-bold tracking-tight text-foreground">
             Why Airlines Trust Us With Their Fleet
           </h2>
           <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">

@@ -1,5 +1,8 @@
+import FeaturedCategories from "@/components/FeaturedCategories";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
+import PartsSearchBar from "@/components/PartsSearchBar";
+import TrustBadges from "@/components/TrustBadges";
 import WhyChooseUsThree from "@/components/WhyChooseUsThree";
 
 export default function Home() {
@@ -8,6 +11,9 @@ export default function Home() {
       <Header />
       <HeroSection />
       <WhyChooseUsThree />
+      <PartsSearchBar />
+      <FeaturedCategories />
+      <TrustBadges />
     </>
   );
 }

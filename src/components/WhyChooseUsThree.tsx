@@ -42,7 +42,7 @@ const itemVariants: Variants = {
 
 export default function WhyChooseUsThree() {
   return (
-      <section className="py-10 mx-auto max-w-7xl px-4 lg:px-6">
+      <section className="py-20 mx-auto max-w-7xl px-4 lg:px-6">
         {/* Compact 4-column grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {reasons.map((reason, index) => {
