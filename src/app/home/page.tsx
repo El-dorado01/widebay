@@ -1,3 +1,4 @@
+import CustomerLogos from "@/components/CustomerLogos";
 import FeaturedCategories from "@/components/FeaturedCategories";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
@@ -14,6 +15,7 @@ export default function Home() {
       <PartsSearchBar />
       <FeaturedCategories />
       <TrustBadges />
+      <CustomerLogos />
     </>
   );
 }

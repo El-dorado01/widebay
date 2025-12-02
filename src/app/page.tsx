@@ -3,6 +3,7 @@ import HeroSearch from "@/components/HeroSearch";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import FeaturedCategories from "@/components/FeaturedCategories";
 import TrustBadges from "@/components/TrustBadges";
+import CustomerLogos from "@/components/CustomerLogos";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       <WhyChooseUs />
       <FeaturedCategories />
       <TrustBadges />
+      <CustomerLogos />
     </>
   );
 }

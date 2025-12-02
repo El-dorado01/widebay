@@ -5,16 +5,16 @@ import { motion, Variants } from "framer-motion";
 import Image from "next/image";
 
 const customers = [
-  { name: "Delta Air Lines", logo: "/customers/delta.svg" },
-  { name: "FedEx Express", logo: "/customers/fedex.svg" },
-  { name: "Lufthansa Technik", logo: "/customers/lufthansa.svg" },
+  { name: "Delta Air Lines", logo: "/customers/hawaiian.svg" },
+  { name: "FedEx Express", logo: "/customers/air-arabia.svg" },
+  { name: "Lufthansa Technik", logo: "/customers/fly-dubai.svg" },
   { name: "Emirates", logo: "/customers/emirates.svg" },
   { name: "American Airlines", logo: "/customers/american.svg" },
-  { name: "UPS Airlines", logo: "/customers/ups.svg" },
+  { name: "UPS Airlines", logo: "/customers/jet-blue.svg" },
   { name: "Qatar Airways", logo: "/customers/qatar.svg" },
   { name: "Singapore Airlines", logo: "/customers/singapore.svg" },
-  { name: "Air France KLM", logo: "/customers/airfrance.svg" },
-  { name: "DHL Aviation", logo: "/customers/dhl.svg" },
+  { name: "Air France KLM", logo: "/customers/polish.svg" },
+  { name: "DHL Aviation", logo: "/customers/united.svg" },
 ];
 
 const containerVariants: Variants = {
@@ -51,7 +51,7 @@ export default function CustomerLogos() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
-            Trusted by the World’s Leading Airlines & MROs
+            Trusted by the World&apos;s Leading Airlines & MROs
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             From scheduled maintenance to critical AOG — we keep fleets flying.
@@ -84,7 +84,7 @@ export default function CustomerLogos() {
                 />
                 {/* Subtle shine */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                  <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/30 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
                 </div>
               </div>
             </motion.div>
