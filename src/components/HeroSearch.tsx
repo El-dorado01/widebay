@@ -19,14 +19,14 @@ export default function HeroSearch() {
     <section className="relative h-screen min-h-[640px] flex items-center justify-center overflow-hidden">
       {/* Background images – automatic responsive switching */}
       <Image
-        src="/hero/hero-image.jpg"
+        src="/hero/dji-fpv.jpg"
         alt="Widebay Parts certified inventory hangar"
         fill
         priority
         className="object-cover hidden md:block"
       />
       <Image
-        src="/hero/hero-image.jpg"
+        src="/hero/dji-fpv.jpg"
         alt="Widebay Parts certified inventory hangar"
         fill
         priority
