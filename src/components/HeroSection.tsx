@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 
 // DJI Drone Hero Images (replace with your real ones)
 const carouselImages = [
-  "/hero/mavic-3.jpg",
+  "/hero/hero-image.jpg",
   "/hero/dji-air.jpg",
   "/hero/inspire-3.jpg",
   "/hero/dji-fpv.jpg",
@@ -77,7 +77,7 @@ export default function HeroSection() {
                   Trusted by 50,000+ Pilots & Creators
                 </span>
                 <span className="flex items-center gap-1 text-green-600 font-medium">
-                  <CheckCircle2 className="h-4 w-4" />
+                  <CheckCircle2 className="h-4 w-4 min-w-4" />
                   Same-Day Shipping Worldwide
                 </span>
               </div>
@@ -188,7 +188,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.2, duration: 0.8 }}
-              className="absolute -top-6 -right-6 rounded-full bg-primary px-8 py-5 text-white shadow-2xl font-bold text-xl"
+              className="absolute -top-6 -right-6 rounded-full bg-primary px-8 py-5 text-white shadow-2xl font-bold lg:text-lg"
             >
               <span className="flex items-center gap-3">
                 <Zap className="h-7 w-7" />

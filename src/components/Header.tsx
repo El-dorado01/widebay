@@ -90,7 +90,7 @@ export default function Header() {
                 </SheetTrigger>
 
                 <SheetContent side="top" className="h-screen pt-28 px-6">
-                  <div className="flex flex-col h-full space-y-8">
+                  <div className="flex flex-col h-full space-y-12">
                     <div className="space-y-6 mt-8">
                       {["Homepage", "Contact us", "About us"].map((label) => (
                         <SheetClose asChild key={label}>
