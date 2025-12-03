@@ -116,7 +116,9 @@ export default function Header() {
                         </Button>
                       </SheetClose>
                       <SheetClose asChild>
-                        <Button className="w-full rounded-full bg-primary/10 hover:bg-primary/30 text-lg h-14">
+                        <Button
+                          className="w-full rounded-full bg-primary/10 hover:bg-primary/30 text-lg h-14 text-accent-foreground"
+                        >
                           Cart
                           <ShoppingCart className="ml-3 h-6 w-6" />
                         </Button>
