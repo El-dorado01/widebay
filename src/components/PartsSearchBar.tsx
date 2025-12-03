@@ -3,54 +3,55 @@
 
 import { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Package, Plane, CheckCircle2, X, ArrowRight } from "lucide-react";
+import { Search, Package, CheckCircle2, X, ArrowRight, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
-// Mock data – replace with your actual API later
+// Real-world DJI parts mock data
 const mockParts = [
   {
     id: 1,
-    pn: "65-12345-100",
-    description: "Landing Gear Actuator",
-    aircraft: "Boeing 737",
+    pn: "CP.MA.00000462.01",
+    description: "Mavic 3 Pro Intelligent Flight Battery",
+    drone: "DJI Mavic 3 Pro / Cine",
     inStock: true,
   },
   {
     id: 2,
-    pn: "D5321234500000",
-    description: "Wing Slat Track",
-    aircraft: "Airbus A320",
+    pn: "CP.FP.00000160.01",
+    description: "DJI FPV Goggles V2",
+    drone: "DJI FPV Combo",
     inStock: true,
   },
   {
     id: 3,
-    pn: "101-123456-01",
-    description: "Hydraulic Pump",
-    aircraft: "Embraer E195",
-    inStock: false,
-  },
-  {
-    id: 4,
-    pn: "BAC27TEX1234",
-    description: "Cockpit Decal Set",
-    aircraft: "Multiple",
+    pn: "BC.PT.SS000301.01",
+    description: "Propellers (Pair) for Air 3",
+    drone: "DJI Air 3 / Air 3S",
     inStock: true,
   },
   {
+    id: 4,
+    pn: "CP.IN.00000029.01",
+    description: "Gimbal Camera Assembly",
+    drone: "DJI Mini 4 Pro",
+    inStock: false,
+  },
+  {
     id: 5,
-    pn: "NAS6203-12",
-    description: "Bolt, Hex Head",
-    aircraft: "Multiple",
+    pn: "CP.RN.00000334.01",
+    description: "Remote Controller RC-N2",
+    drone: "Multiple (Mini 4 Pro, Air 3, etc.)",
     inStock: true,
   },
   {
     id: 6,
-    pn: "A35321-001",
-    description: "APU Starter Generator",
-    aircraft: "ATR 72",
+    pn: "CP.MA.00000686.01",
+    description: "ND Filter Set (ND16/64/256)",
+    drone: "DJI Mavic 3 Classic",
     inStock: true,
   },
 ];
@@ -61,7 +62,6 @@ export default function PartsSearchBar() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Filter results
   const results = useMemo(() => {
     if (!query.trim()) return [];
     const q = query.toLowerCase();
@@ -69,7 +69,7 @@ export default function PartsSearchBar() {
       (part) =>
         part.pn.toLowerCase().includes(q) ||
         part.description.toLowerCase().includes(q) ||
-        part.aircraft.toLowerCase().includes(q)
+        part.drone.toLowerCase().includes(q)
     );
   }, [query]);
 
@@ -99,31 +99,30 @@ export default function PartsSearchBar() {
 
   return (
     <section className="py-20 bg-linear-to-b from-slate-50/50 to-white">
-      <div className="mx-auto max-w-4xl px-6">
-        {/* Section title */}
+      <div className="mx-auto max-w-5xl px-6">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-10"
+          className="text-center mb-12"
         >
-          <h2 className="text-2xl font-bold tracking-tight text-foreground">
-            Find the Part You Need — Instantly
+          <h2 className="text-2xl lg:text-3xl font-bold tracking-tight text-foreground">
+            Find Your DJI Part in Seconds
           </h2>
-          <p className="mt-3 text-lg text-muted-foreground">
-            Search over 50,000 certified aircraft parts by part number,
-            description, or aircraft
+          <p className="mt-4 lg:text-xl text-muted-foreground">
+            Search 10,000+ genuine parts by part number, drone model, or keyword
           </p>
         </motion.div>
 
-        {/* Search Input + Dropdown */}
-        <div className="relative">
+        {/* Search Bar */}
+        <div className="relative max-w-3xl mx-auto">
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground" />
             <Input
               ref={inputRef}
               type="text"
-              placeholder="Enter part number, description, or aircraft (e.g. 65-12345, slat track, A320...)"
+              placeholder="Try: Mavic 3 battery, Mini 4 Pro gimbal, FPV goggles, ND filter..."
               value={query}
               onChange={(e) => {
                 setQuery(e.target.value);
@@ -131,20 +130,20 @@ export default function PartsSearchBar() {
                 setSelectedIndex(0);
               }}
               onFocus={() => results.length > 0 && setIsOpen(true)}
-              className="h-16 pl-12 pr-14 text-lg rounded-2xl shadow-lg focus:shadow-xl transition-shadow"
+              className="h-20 pl-16 pr-20 lg:text-xl rounded-3xl shadow-xl focus:shadow-2xl transition-all duration-300 border-2 border-transparent focus:border-primary/30"
             />
             {query && (
               <Button
                 size="icon"
                 variant="ghost"
-                className="absolute right-2 top-1/2 -translate-y-1/2"
+                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full hover:bg-muted"
                 onClick={() => {
                   setQuery("");
                   setIsOpen(false);
                   inputRef.current?.focus();
                 }}
               >
-                <X className="h-5 w-5" />
+                <X className="h-6 w-6" />
               </Button>
             )}
           </div>
@@ -153,64 +152,61 @@ export default function PartsSearchBar() {
           <AnimatePresence>
             {isOpen && results.length > 0 && (
               <motion.div
-                initial={{ opacity: 0, y: -10 }}
+                initial={{ opacity: 0, y: -12 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2 }}
-                className="absolute top-full left-0 right-0 mt-3 rounded-2xl bg-white shadow-2xl border ring-1 ring-black/5 overflow-hidden z-50"
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.25 }}
+                className="absolute top-full left-0 right-0 mt-4 rounded-3xl bg-white shadow-2xl border overflow-hidden z-50 ring-1 ring-black/5"
               >
-                <div className="max-h-96 overflow-y-auto py-2">
+                <div className="max-h-96 overflow-y-auto py-3">
                   {results.map((part, index) => (
-                    <a
+                    <Link
                       key={part.id}
                       href={`/part/${part.pn}`}
                       className={cn(
-                        "flex items-center justify-between px-6 py-4 transition-colors",
+                        "flex items-center justify-between px-8 py-5 transition-all duration-200",
                         selectedIndex === index
-                          ? "bg-primary/5"
-                          : "hover:bg-muted/50"
+                          ? "bg-primary/5 border-l-4 border-primary"
+                          : "hover:bg-muted/60"
                       )}
                       onMouseEnter={() => setSelectedIndex(index)}
                     >
-                      <div className="flex items-start gap-4">
-                        <div className="mt-1">
-                          <Package className="h-5 w-5 text-primary" />
+                      <div className="flex items-center gap-5">
+                        <div className="p-3 rounded-2xl bg-primary/10">
+                          <Package className="h-7 w-7 text-primary" />
                         </div>
                         <div>
-                          <div className="flex items-center gap-3">
-                            <span className="font-mono font-semibold text-foreground">
+                          <div className="flex items-center gap-4 mb-1">
+                            <span className="font-mono lg:text-lg font-bold text-foreground">
                               {part.pn}
                             </span>
                             {part.inStock ? (
-                              <Badge
-                                variant="default"
-                                className="bg-emerald-100 text-emerald-700"
-                              >
-                                <CheckCircle2 className="mr-1 h-3 w-3" />
-                                In Stock
+                              <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-200">
+                                <CheckCircle2 className="mr-1.5 h-4 w-4" />
+                                In Stock – Ships Today
                               </Badge>
                             ) : (
-                              <Badge variant="secondary">Lead Time</Badge>
+                              <Badge variant="secondary">Pre-Order</Badge>
                             )}
                           </div>
-                          <p className="text-sm text-muted-foreground mt-1">
+                          <p className="text-base font-medium text-foreground/90">
                             {part.description}
                           </p>
-                          <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
-                            <Plane className="h-3.5 w-3.5" />
-                            {part.aircraft}
-                          </div>
+                          <p className="text-sm text-muted-foreground mt-1 flex items-center gap-2">
+                            <Zap className="h-4 w-4 text-yellow-600" />
+                            {part.drone}
+                          </p>
                         </div>
                       </div>
-                      <ArrowRight className="h-5 w-5 text-muted-foreground" />
-                    </a>
+                      <ArrowRight className="h-6 w-6 text-muted-foreground group-hover:text-primary transition-colors" />
+                    </Link>
                   ))}
                 </div>
 
-                {/* Footer */}
-                <div className="border-t bg-muted/30 px-6 py-3 text-center text-sm text-muted-foreground">
-                  Found {results.length} part{results.length !== 1 ? "s" : ""} •
-                  Press ↑↓ to navigate • Enter to view
+                <div className="border-t bg-linear-to-r from-primary/5 to-transparent px-8 py-4 text-center text-sm font-medium text-muted-foreground">
+                  Found {results.length} genuine DJI part
+                  {results.length !== 1 ? "s" : ""} • ↑↓ to navigate • Enter to
+                  view
                 </div>
               </motion.div>
             )}
@@ -221,15 +217,14 @@ export default function PartsSearchBar() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="absolute top-full left-0 right-0 mt-3 rounded-2xl bg-white shadow-2xl border p-8 text-center"
+              className="absolute top-full left-0 right-0 mt-4 rounded-3xl bg-white shadow-2xl border p-10 text-center"
             >
-              <p className="text-muted-foreground">
-                No parts found for &quot;
-                <span className="font-medium text-foreground">{query}</span>
-                &quot;
+              <p className="lg:text-lg text-muted-foreground mb-4">
+                No results for &quot;
+                <span className="font-bold text-foreground">{query}</span>&quot;
               </p>
-              <Button variant="link" className="mt-4">
-                Contact our AOG team for help →
+              <Button size="lg" className="rounded-full">
+                Chat with a DJI Expert
               </Button>
             </motion.div>
           )}

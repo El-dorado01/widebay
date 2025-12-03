@@ -5,9 +5,9 @@ import { motion, Variants } from "framer-motion";
 import Image from "next/image";
 
 const customers = [
-  { name: "Delta Air Lines", logo: "/customers/hawaiian.svg" },
-  { name: "FedEx Express", logo: "/customers/air-arabia.svg" },
-  { name: "Lufthansa Technik", logo: "/customers/fly-dubai.svg" },
+  { name: "Hawaiian Air Lines", logo: "/customers/hawaiian.svg" },
+  { name: "Air Arabia", logo: "/customers/air-arabia.svg" },
+  { name: "Fly Dubai", logo: "/customers/fly-dubai.svg" },
   { name: "Emirates", logo: "/customers/emirates.svg" },
   { name: "American Airlines", logo: "/customers/american.svg" },
   { name: "UPS Airlines", logo: "/customers/jet-blue.svg" },
@@ -50,7 +50,7 @@ export default function CustomerLogos() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
+          <h2 className="text-2xl lg:text-3xl font-bold tracking-tight text-foreground">
             Trusted by the World&apos;s Leading Airlines & MROs
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">

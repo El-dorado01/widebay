@@ -3,62 +3,61 @@
 
 import { motion, Variants } from "framer-motion";
 import {
-  Package,
-  Plane,
+  Camera,
+  Battery,
   Zap,
-  Wrench,
-  Gauge,
+  Radio,
   Cpu,
+  Shield,
   ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
 
 const categories = [
   {
-    title: "Avionics & Instruments",
-    icon: Gauge,
-    color: "from-gray-500 to-gray-600",
-    href: "/category/avionics",
-    description: "EFIS, FMS, radios, transponders",
-  },
-  {
-    title: "Landing Gear",
-    icon: Plane,
-    color: "from-indigo-500 to-indigo-600",
-    href: "/category/landing-gear",
-    description: "Wheels, brakes, struts, actuators",
-  },
-  {
-    title: "Hydraulics",
-    icon: Zap,
+    title: "Gimbal & Cameras",
+    icon: Camera,
     color: "from-purple-500 to-purple-600",
-    href: "/category/hydraulics",
-    description: "Pumps, actuators, accumulators",
+    href: "/category/gimbal-cameras",
+    description: "Hasselblad, Zenmuse, Mini 4K, FPV cameras",
   },
   {
-    title: "Engine & APU",
+    title: "Batteries & Chargers",
+    icon: Battery,
+    color: "from-emerald-500 to-emerald-600",
+    href: "/category/batteries",
+    description: "Intelligent Flight Batteries, hubs, fast chargers",
+  },
+  {
+    title: "Propellers",
+    icon: Zap,
+    color: "from-orange-500 to-orange-600",
+    href: "/category/propellers",
+    description: "Low-noise, quick-release, carbon fiber props",
+  },
+  {
+    title: "Remote Controllers",
+    icon: Radio,
+    color: "from-blue-500 to-blue-600",
+    href: "/category/controllers",
+    description: "RC-N1, RC-N2, RC Pro, Smart Controller",
+  },
+  {
+    title: "Motors & ESCs",
     icon: Cpu,
     color: "from-red-500 to-red-600",
-    href: "/category/engine-apu",
-    description: "Turbine blades, fuel nozzles, starters",
+    href: "/category/motors-escs",
+    description: "Replacement motors, ESCs, arms, frames",
   },
   {
-    title: "Airframe & Structures",
-    icon: Wrench,
-    color: "from-emerald-500 to-emerald-600",
-    href: "/category/airframe",
-    description: "Wing components, slats, flaps, doors",
-  },
-  {
-    title: "Interior & Galleys",
-    icon: Package,
-    color: "from-amber-500 to-amber-600",
-    href: "/category/interior",
-    description: "Seats, panels, monuments, lavatories",
+    title: "ND Filters & Accessories",
+    icon: Shield,
+    color: "from-cyan-500 to-cyan-600",
+    href: "/category/filters-accessories",
+    description: "ND/PL filters, lens hoods, landing gear, cases",
   },
 ];
 
-// Properly typed variants
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -71,17 +70,11 @@ const containerVariants: Variants = {
 };
 
 const itemVariants: Variants = {
-  hidden: {
-    y: 40,
-    opacity: 0,
-  },
+  hidden: { y: 40, opacity: 0 },
   visible: {
     y: 0,
     opacity: 1,
-    transition: {
-      duration: 0.7,
-      ease: "easeOut", // This is a valid easing string
-    },
+    transition: { duration: 0.7, ease: "easeOut" },
   },
 };
 
@@ -97,12 +90,12 @@ export default function FeaturedCategories() {
           transition={{ duration: 0.7 }}
           className="text-center mb-16"
         >
-          <h2 className="text-2xl lg:text-3xl font-bold tracking-tight text-foreground">
+          <h2 className="text-2xl lg:text-3xl font-black tracking-tight text-foreground">
             Shop by Category
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
-            Browse our most requested aircraft spare parts — certified,
-            traceable, and ready to ship.
+          <p className="mt-4 text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto">
+            Genuine DJI parts for every model — Mavic, Air, Mini, FPV, Inspire &
+            Enterprise
           </p>
         </motion.div>
 
@@ -118,13 +111,10 @@ export default function FeaturedCategories() {
             const Icon = category.icon;
 
             return (
-              <motion.div
-                key={category.title}
-                variants={itemVariants} // Correctly typed + used
-              >
+              <motion.div key={category.title} variants={itemVariants}>
                 <Link
                   href={category.href}
-                  className="group block relative overflow-hidden rounded-3xl bg-muted/50 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2"
+                  className="group block relative overflow-hidden rounded-3xl bg-muted/50 transition-all duration-500 hover:shadow-2xl hover:-translate-y-3"
                 >
                   {/* Gradient overlay on hover */}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
@@ -134,8 +124,9 @@ export default function FeaturedCategories() {
                   </div>
 
                   <div className="relative p-8 lg:p-10 text-center">
+                    {/* Icon */}
                     <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-white/90 shadow-lg ring-8 ring-white/50 transition-all group-hover:scale-110 group-hover:shadow-2xl">
-                      <Icon className="h-10 w-10 text-primary transition-colors group-hover:text-white" />
+                      <Icon className="h-11 w-11 text-primary transition-colors group-hover:text-white" />
                     </div>
 
                     <h3 className="text-xl font-bold text-foreground mb-3 transition-colors group-hover:text-white">
@@ -145,15 +136,15 @@ export default function FeaturedCategories() {
                       {category.description}
                     </p>
 
-                    <div className="flex items-center justify-center gap-2 text-primary font-medium transition-all group-hover:text-white">
-                      <span>Browse Parts</span>
-                      <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-2" />
+                    <div className="flex items-center justify-center gap-2 text-primary font-bold transition-all group-hover:text-white">
+                      <span>Shop Now</span>
+                      <ArrowRight className="h-6 w-6 transition-transform group-hover:translate-x-3" />
                     </div>
                   </div>
 
-                  {/* Shine effect */}
+                  {/* Shine sweep effect */}
                   <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                    <div className="absolute -inset-10 bg-linear-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                    <div className="absolute -inset-10 bg-linear-to-r from-transparent via-white/30 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
                   </div>
                 </Link>
               </motion.div>
@@ -170,9 +161,9 @@ export default function FeaturedCategories() {
           className="text-center mt-16"
         >
           <Link href="/catalog">
-            <button className="text-sm inline-flex items-center gap-3 rounded-full bg-primary px-8 py-4 text-white font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-105">
-              View Full Catalog (50,000+ Parts)
-              <ArrowRight className="h-5 w-5" />
+            <button className="inline-flex items-center gap-3 rounded-full bg-primary px-10 py-5 text-white font-bold text-lg shadow-xl hover:shadow-2xl transition-all hover:scale-105">
+              View All 10,000+ DJI Parts
+              <ArrowRight className="h-6 w-6" />
             </button>
           </Link>
         </motion.div>

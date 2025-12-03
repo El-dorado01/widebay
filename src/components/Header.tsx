@@ -90,7 +90,7 @@ export default function Header() {
                 </SheetTrigger>
 
                 <SheetContent side="top" className="h-screen pt-28 px-6">
-                  <div className="flex flex-col h-full justify-between">
+                  <div className="flex flex-col h-full space-y-8">
                     <div className="space-y-6 mt-8">
                       {["Homepage", "Contact us", "About us"].map((label) => (
                         <SheetClose asChild key={label}>
@@ -129,12 +129,6 @@ export default function Header() {
           </div>
         </div>
       </header>
-      {/* {open && (
-        <div
-          className="fixed inset-0 bg-black/40 z-60"
-          onClick={() => setOpen(false)}
-        />
-      )} */}
     </>
   );
 }

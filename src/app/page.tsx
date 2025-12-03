@@ -2,8 +2,9 @@ import Header from "@/components/Header";
 import HeroSearch from "@/components/HeroSearch";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import FeaturedCategories from "@/components/FeaturedCategories";
-import TrustBadges from "@/components/TrustBadges";
-import CustomerLogos from "@/components/CustomerLogos";
+import FeaturedProducts from "@/components/FeaturedProducts";
+import Testimonials from "@/components/Testimonials";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -11,9 +12,10 @@ export default function Home() {
       <Header />
       <HeroSearch />
       <WhyChooseUs />
+      <FeaturedProducts />
       <FeaturedCategories />
-      <TrustBadges />
-      <CustomerLogos />
+      <Testimonials />
+      <Footer />
     </>
   );
 }

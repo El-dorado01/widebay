@@ -1,9 +1,10 @@
-import CustomerLogos from "@/components/CustomerLogos";
 import FeaturedCategories from "@/components/FeaturedCategories";
+import FeaturedProducts from "@/components/FeaturedProducts";
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import PartsSearchBar from "@/components/PartsSearchBar";
-import TrustBadges from "@/components/TrustBadges";
+import Testimonials from "@/components/Testimonials";
 import WhyChooseUsTwo from "@/components/WhyChooseUsTwo";
 
 export default function Home() {
@@ -13,9 +14,10 @@ export default function Home() {
       <HeroSection />
       <WhyChooseUsTwo />
       <PartsSearchBar />
+      <FeaturedProducts />
       <FeaturedCategories />
-      <TrustBadges />
-      <CustomerLogos />
+      <Testimonials />
+      <Footer />
     </>
   );
 }
