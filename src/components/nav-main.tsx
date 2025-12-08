@@ -24,10 +24,10 @@ export function NavMain({
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
           {items.map((item) => (
-            <SidebarMenuItem className="h-14" key={item.title}>
+            <SidebarMenuItem className="h-12" key={item.title}>
               <SidebarMenuButton
                 tooltip={item.title}
-                className={`h-full text-[16px] hover:bg-background text-accent-foreground ${
+                className={`h-full hover:bg-background text-accent-foreground ${
                   item.active &&
                   "bg-accent/90 hover:bg-accent/90 text-white hover:text-white"
                 }`}

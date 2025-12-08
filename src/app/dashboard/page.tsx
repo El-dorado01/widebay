@@ -1,15 +1,6 @@
 import { AppSidebar } from "@/components/app-sidebar"
 import { SearchForm } from "@/components/search-form";
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
-import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
@@ -26,10 +17,10 @@ export default function Page() {
     >
       <AppSidebar />
       <SidebarInset>
-        <header className="flex border h-16 shrink-0 items-center justify-between gap-2 px-4">
+        <header className="flex border-b h-16 shrink-0 items-center justify-between gap-2 px-4">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
-            <Separator
+            {/* <Separator
               orientation="vertical"
               className="mr-2 data-[orientation=vertical]:h-4"
             />
@@ -45,17 +36,17 @@ export default function Page() {
                   <BreadcrumbPage>Data Fetching</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
-            </Breadcrumb>
+            </Breadcrumb> */}
           </div>
           <SearchForm />
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <div className="flex flex-1 flex-col gap-4 p-4">
           <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="bg-muted/50 aspect-video rounded-xl" />
-            <div className="bg-muted/50 aspect-video rounded-xl" />
-            <div className="bg-muted/50 aspect-video rounded-xl" />
+            <div className="bg-sidebar-accent aspect-video rounded-xl" />
+            <div className="bg-sidebar-accent aspect-video rounded-xl" />
+            <div className="bg-sidebar-accent aspect-video rounded-xl" />
           </div>
-          <div className="bg-muted/50 min-h-screen flex-1 rounded-xl md:min-h-min" />
+          <div className="bg-sidebar-accent min-h-screen flex-1 rounded-xl md:min-h-min" />
         </div>
       </SidebarInset>
     </SidebarProvider>

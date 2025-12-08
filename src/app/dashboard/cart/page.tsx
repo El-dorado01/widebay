@@ -1,22 +1,16 @@
 import { AppSidebar } from "@/components/app-sidebar";
+import { DataTable } from "@/components/data-table";
 import { SearchForm } from "@/components/search-form";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-// import { DataTable } from "@/components/data-table";
 import Link from "next/link";
+
+import data from "../../dashboard-3/data.json";
 
 export default function Page() {
   return (
@@ -29,32 +23,47 @@ export default function Page() {
     >
       <AppSidebar />
       <SidebarInset>
-        <header className="flex border h-16 shrink-0 items-center justify-between gap-2 px-4">
+        <header className="flex border-b h-16 shrink-0 items-center justify-between gap-2 px-4">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
-            <Separator
-              orientation="vertical"
-              className="mr-2 data-[orientation=vertical]:h-4"
-            />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem className="hidden text-[16px] md:block">
-                  <BreadcrumbLink href="#">Home</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem className="text-[16px]">
-                  <BreadcrumbPage>Cart</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
           </div>
           <SearchForm />
         </header>
         <div className="flex gap-2 items-center justify-between p-6 my-4">
           <h2 className="text-lg">My Cart</h2>
-          <Button asChild variant={"outline"} className="border border-accent hover:text-white py-2 px-4">
+          <Button
+            asChild
+            variant={"outline"}
+            className="border border-accent hover:text-white py-2 px-4"
+          >
             <Link href={""}>Continue Shopping</Link>
           </Button>
+        </div>
+        <DataTable data={data} />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-6 mt-4">
+          <div className="border rounded-lg p-4 bg-sidebar">
+            <h3 className="border-b p-2">Choose shipping mode</h3>
+          </div>
+          <div className="border rounded-lg p-4 bg-sidebar">
+            <h3 className="border-b p-2">Order Summary</h3>
+            <div className="flex flex-col gap-2 items-center justify-center p-2 border-b">
+              <div className="flex items-center justify-between w-full gap-2">
+                <span>Total Items:</span>
+                <span className="font-bold">3</span>
+              </div>
+              <div className="flex items-center justify-between w-full gap-2">
+                <span>Total Price:</span>
+                <span className="font-bold">$127,000</span>
+              </div>
+              <div className="flex items-center justify-between w-full gap-2">
+                <span>Tax:</span>
+                <span className="font-bold">$2,000</span>
+              </div>
+            </div>
+            <Button className="w-full mt-4 bg-accent text-white">
+              Proceed to Checkout
+            </Button>
+          </div>
         </div>
       </SidebarInset>
     </SidebarProvider>

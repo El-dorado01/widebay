@@ -13,13 +13,14 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { CogIcon, DroneIcon, HeartIcon, HomeIcon, ShoppingCartIcon } from "lucide-react";
+import { CogIcon, DroneIcon, HeartIcon, HomeIcon, PlaneTakeoff, ShoppingCartIcon } from "lucide-react";
+import Link from "next/link";
 
 const data = {
   user: {
     name: "shadcn",
     email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    avatar: "https://ui.shadcn.com/avatars/shadcn.jpg",
   },
   navMain: [
     {
@@ -61,15 +62,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
-              <a href="#">
-                <DroneIcon className="size-5!" />
-                <span className="text-base font-semibold">Acme Inc.</span>
-              </a>
+              <Link href="#" className="h-10 flex items-center justify-center gap-2">
+                <PlaneTakeoff className="size-5!" />
+                <span className="text-base font-semibold">Widebay Drones</span>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="mt-5">
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>

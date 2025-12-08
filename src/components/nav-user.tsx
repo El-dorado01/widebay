@@ -73,18 +73,18 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem className="h-14 text-[16px] focus:text-white">
-                <UserCircleIcon className="mr-2 size-5" />
+              <DropdownMenuItem className="h-14 focus:text-white">
+                <UserCircleIcon className="mr-2 size-4.5" />
                 Account
               </DropdownMenuItem>
-              <DropdownMenuItem className="h-14 text-[16px] focus:text-white">
-                <BellDotIcon className="mr-2 size-5" />
+              <DropdownMenuItem className="h-14 focus:text-white">
+                <BellDotIcon className="mr-2 size-4.5" />
                 Notifications
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="h-14 text-[16px] text-red-500">
-              <LogOutIcon className="mr-2 size-5 text-red-500" />
+            <DropdownMenuItem className="h-14 text-red-500">
+              <LogOutIcon className="mr-2 size-4.5 text-red-500" />
               Log out
             </DropdownMenuItem>
           </DropdownMenuContent>
