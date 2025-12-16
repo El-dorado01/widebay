@@ -26,8 +26,8 @@ export default function FeaturedPage() {
               Trending Products
             </CardTitle>
             <CardDescription>
-              Products shown in the "Trending" section on the homepage (max 8
-              recommended)
+              Products shown in the &quot;Trending&quot; section on the homepage
+              (max 8 recommended)
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
