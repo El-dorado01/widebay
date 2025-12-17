@@ -15,7 +15,7 @@ import { Search, TrendingUp, Percent, Plus, X } from "lucide-react";
 export default function FeaturedPage() {
   return (
     <div className="space-y-6">
-      <h2 className="text-3xl font-bold">Manage Featured Items</h2>
+      <h2 className="text-2xl font-bold">Manage Featured Items</h2>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Trending Products */}

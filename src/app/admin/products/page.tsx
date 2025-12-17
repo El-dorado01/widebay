@@ -92,7 +92,7 @@ export default function ProductsPage() {
 
   return (
     <div className="space-y-8">
-      <h2 className="text-3xl font-bold">Manage Products</h2>
+      <h2 className="text-2xl font-bold">Manage Products</h2>
 
       <AddProductForm />
 

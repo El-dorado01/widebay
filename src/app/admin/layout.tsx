@@ -34,8 +34,8 @@ export default function AdminLayout({
         </header>
 
         {/* Admin Navigation Tabs */}
-        <div className="border-b bg-background flex items-center justify-between space-x-2 px-6">
-            <h3 className="hidden md:block">Quick Links</h3>
+        <div className="border-b bg-background hidden md:flex items-center justify-between space-x-2 px-6">
+            <h3>Quick Links</h3>
             <nav className="flex gap-6 px-6">
                 <Link
                 href="/admin/categories"
