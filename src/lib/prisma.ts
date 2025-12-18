@@ -1,7 +1,7 @@
 // lib/prisma.ts
 import "dotenv/config"; // Loads DATABASE_URL from .env
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
-import { PrismaClient } from "@/generated/prisma/client";
+import { PrismaClient } from "../generated/prisma/client";
 
 const url = process.env.DATABASE_URL!; // e.g., "file:./dev.db"
 
