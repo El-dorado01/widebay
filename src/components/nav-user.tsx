@@ -1,6 +1,7 @@
-"use client";
+'use client';
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { signOut } from 'next-auth/react'; // ← Added
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,14 +10,19 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar";
-import { BellDotIcon, LogOutIcon, MoreVerticalIcon, UserCircleIcon } from "lucide-react";
+} from '@/components/ui/sidebar';
+import {
+  BellDotIcon,
+  LogOutIcon,
+  MoreVerticalIcon,
+  UserCircleIcon,
+} from 'lucide-react';
 
 export function NavUser({
   user,
@@ -29,43 +35,53 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar();
 
+  const handleLogout = () => {
+    signOut({ callbackUrl: '/login' }); // ← Redirects to /login after logout
+  };
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
-              size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              size='lg'
+              className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
             >
-              <Avatar className="h-10 w-10 rounded-lg grayscale">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+              <Avatar className='h-10 w-10 rounded-lg grayscale'>
+                <AvatarImage
+                  src={user.avatar}
+                  alt={user.name}
+                />
+                <AvatarFallback className='rounded-lg'>CN</AvatarFallback>
               </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
-                <span className="text-muted-foreground truncate text-xs">
+              <div className='grid flex-1 text-left text-sm leading-tight'>
+                <span className='truncate font-medium'>{user.name}</span>
+                <span className='text-muted-foreground truncate text-xs'>
                   {user.email}
                 </span>
               </div>
-              <MoreVerticalIcon className="ml-auto size-4" />
+              <MoreVerticalIcon className='ml-auto size-4' />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-            side={isMobile ? "bottom" : "right"}
-            align="end"
+            className='w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg'
+            side={isMobile ? 'bottom' : 'right'}
+            align='end'
             sideOffset={4}
           >
-            <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+            <DropdownMenuLabel className='p-0 font-normal'>
+              <div className='flex items-center gap-2 px-1 py-1.5 text-left text-sm'>
+                <Avatar className='h-8 w-8 rounded-lg'>
+                  <AvatarImage
+                    src={user.avatar}
+                    alt={user.name}
+                  />
+                  <AvatarFallback className='rounded-lg'>CN</AvatarFallback>
                 </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
-                  <span className="text-muted-foreground truncate text-xs">
+                <div className='grid flex-1 text-left text-sm leading-tight'>
+                  <span className='truncate font-medium'>{user.name}</span>
+                  <span className='text-muted-foreground truncate text-xs'>
                     {user.email}
                   </span>
                 </div>
@@ -73,18 +89,22 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem className="h-14 focus:text-white">
-                <UserCircleIcon className="mr-2 size-4.5" />
+              <DropdownMenuItem className='cursor-pointer h-14 focus:text-white'>
+                <UserCircleIcon className='mr-2 size-4.5' />
                 Account
               </DropdownMenuItem>
-              <DropdownMenuItem className="h-14 focus:text-white">
-                <BellDotIcon className="mr-2 size-4.5" />
+              <DropdownMenuItem className='cursor-pointer h-14 focus:text-white'>
+                <BellDotIcon className='mr-2 size-4.5' />
                 Notifications
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="h-14 text-red-500">
-              <LogOutIcon className="mr-2 size-4.5 text-red-500" />
+            {/* Functional Logout */}
+            <DropdownMenuItem
+              onSelect={handleLogout}
+              className='cursor-pointer h-14 text-red-600 focus:bg-red-600 focus:text-white'
+            >
+              <LogOutIcon className='mr-2 size-4.5 text-red-600' />
               Log out
             </DropdownMenuItem>
           </DropdownMenuContent>

@@ -1,53 +1,52 @@
 // src/auth.ts
-import NextAuth from "next-auth";
-import type { NextAuthOptions } from "next-auth";
-import Google from "next-auth/providers/google";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import prisma from "@/lib/prisma";
+import NextAuth from 'next-auth';
+import type { NextAuthOptions } from 'next-auth';
+import Google from 'next-auth/providers/google';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import prisma from '@/lib/prisma';
 
-const adapter = process.env.DISABLE_DB ? undefined : PrismaAdapter(prisma);
 export const authOptions: NextAuthOptions = {
-  // adapter: PrismaAdapter(prisma),
-  ...(adapter ? { adapter } : {}),
+  adapter: PrismaAdapter(prisma),
   providers: [
     Google({
-      clientId: process.env.AUTH_GOOGLE_ID || "",
-      clientSecret: process.env.AUTH_GOOGLE_SECRET || "",
+      clientId: process.env.AUTH_GOOGLE_ID || '',
+      clientSecret: process.env.AUTH_GOOGLE_SECRET || '',
     }),
   ],
-  session: { strategy: "jwt" },
-  pages: { signIn: "/login" },
+  session: { strategy: 'jwt' },
+  pages: { signIn: '/login' },
   callbacks: {
     async jwt({ token, user }) {
-      // First sign-in: `user` is the created DB user (with role)
-      if (user && "role" in user && user.role) {
-        token.role = user.role as "admin" | "user";
+      // Only on first sign-in (user object from DB)
+      if (user) {
+        token.role = (user.role as 'admin' | 'user') || 'user';
       }
       return token;
     },
     async session({ session, token }) {
-      if (session.user && token.role) {
-        session.user.role = token.role as "admin" | "user";
+      if (token.role) {
+        session.user.role = token.role as 'admin' | 'user';
       }
       return session;
     },
-    async signIn({ profile }) {
-      // Runs after user is created/linked
-      if (!profile?.email) return true;
+  },
+  events: {
+    async createUser({ user }) {
+      if (!user.email) return;
 
-      // Check for admin email directly via raw SQL to avoid PrismaClient typings mismatch
-      const adminEntry = await prisma.$queryRaw`
-        SELECT id, email FROM admin_emails WHERE email = ${profile.email} LIMIT 1
-      `;
+      // Correct model name: AdminEmail → prisma.adminEmail
+      const adminEntry = await prisma.adminEmail.findUnique({
+        where: { email: user.email },
+      });
 
       if (adminEntry) {
-        // Update role in DB if email is admin using raw SQL
-        await prisma.$executeRaw`
-          UPDATE users SET role = 'admin' WHERE email = ${profile.email}
-        `;
+        // Correct model name: User → prisma.user
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { role: 'admin' },
+        });
       }
-
-      return true;
+      // Else: role remains default "user" from schema
     },
   },
 };
