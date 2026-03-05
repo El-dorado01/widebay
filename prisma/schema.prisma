@@ -1,7 +1,7 @@
 // prisma/schema.prisma
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
@@ -23,6 +23,8 @@ model User {
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+
+  orders        Order[]
 
   @@map("users")
 }
@@ -129,4 +131,37 @@ model AdminEmail {
   createdAt DateTime @default(now())
 
   @@map("admin_emails")
+}
+
+model Order {
+  id            String   @id @default(uuid())
+  stripeSessionId String @unique
+  customerEmail String?
+  customerName  String?
+  totalAmount   Int      // in cents
+  currency      String   @default("usd")
+  status        String   @default("paid") // paid, pending, failed, etc.
+  shippingOption String  // "store-pickup" or "home-delivery"
+  shippingAddress Json?   // from Stripe
+  createdAt     DateTime @default(now())
+
+  userId        String?
+  user          User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  items         OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String @id @default(uuid())
+  orderId   String
+  order     Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  productId String
+  name      String
+  price     Int    // in cents
+  quantity  Int
+  imageUrl  String?
+
+  @@map("order_items")
 }

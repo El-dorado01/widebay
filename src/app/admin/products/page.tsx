@@ -1,110 +1,216 @@
 // app/admin/products/page.tsx
-"use client";
+'use client';
 
-import AddProductForm from "@/components/add-products-form";
-import EditProductDialog from "@/components/edit-product-dialog";
-import ProductsTable from "@/components/products-table";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { useState } from "react";
+} from '@/components/ui/card';
+import { Loader2, Search } from 'lucide-react';
+import { toast } from 'sonner';
+import { Input } from '@/components/ui/input';
+import { useState, useEffect } from 'react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
-type Product = {
-  id: number;
-  name: string;
-  category: string;
-  price: number;
-  discountPrice: number | null;
-  stock: number;
-  description: string;
-  imageUrl: string;
-};
+import AddProductForm from '@/components/add-products-form';
+import EditProductDialog from '@/components/edit-product-dialog';
+import ProductsTable from '@/components/products-table';
+import { Product } from '@/types';
+import { deleteProduct } from '@/lib/actions';
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState<Product[]>([
-    {
-      id: 1,
-      name: "Nike Air Max 270",
-      category: "Shoes",
-      price: 129.99,
-      discountPrice: 99.99,
-      stock: 45,
-      description: "Comfortable running shoes with Max Air unit.",
-      imageUrl:
-        "https://static.nike.com/a/images/t_prod_ss/w_960,c_limit,f_auto/air-max-270-shoes-2r6r7k.jpg",
-    },
-    {
-      id: 2,
-      name: "Wireless Headphones Pro",
-      category: "Electronics",
-      price: 199.99,
-      discountPrice: null,
-      stock: 12,
-      description: "Premium noise-cancelling wireless headphones.",
-      imageUrl:
-        "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MQTW3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1682362771505",
-    },
-    {
-      id: 3,
-      name: "Premium Leather Jacket",
-      category: "Clothes",
-      price: 299.99,
-      discountPrice: 199.99,
-      stock: 8,
-      description: "Genuine leather jacket with modern fit.",
-      imageUrl:
-        "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&q=80",
-    },
-    {
-      id: 4,
-      name: "Smart Watch Series X",
-      category: "Electronics",
-      price: 399.99,
-      discountPrice: null,
-      stock: 23,
-      description: "Advanced health tracking and notifications.",
-      imageUrl:
-        "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MX3A3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1687667484143",
-    },
-  ]);
-
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [editProduct, setEditProduct] = useState<Product | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
+
+  // Pagination state
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState<number>(0);
+  const limit = 10;
+
+  // Search state
+  const [searchInput, setSearchInput] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const fetchProducts = async (
+    currentPage: number = page,
+    search: string = searchQuery,
+  ) => {
+    setLoading(true);
+    try {
+      const url = new URL(`/api/admin/products`, window.location.origin);
+      url.searchParams.set('page', currentPage.toString());
+      url.searchParams.set('limit', limit.toString());
+      if (search) {
+        url.searchParams.set('search', search);
+      }
+
+      const res = await fetch(url.toString(), { cache: 'no-store' });
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          setProducts(data);
+          setTotalPages(1);
+          setTotalCount(data.length);
+        } else {
+          setProducts(data.products || []);
+          const total = data.total || 0;
+          setTotalCount(total);
+          setTotalPages(Math.ceil(total / limit) || 1);
+        }
+      } else {
+        toast.error('Failed to load products');
+      }
+    } catch {
+      toast.error('Failed to load products');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts(page, searchQuery);
+  }, [page, searchQuery]);
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setPage(1); // Reset to page 1 on new search
+    setSearchQuery(searchInput);
+  };
 
   const handleEdit = (product: Product) => {
     setEditProduct(product);
     setIsEditOpen(true);
   };
 
-  const handleSave = (updatedProduct: Product, newImageUrl: string) => {
-    setProducts(
-      products.map((p) =>
-        p.id === updatedProduct.id
-          ? { ...updatedProduct, imageUrl: newImageUrl }
-          : p
-      )
+  const handleDelete = async (id: string) => {
+    setDeletingId(id);
+    setConfirmDeleteId(null);
+
+    const promise = deleteProduct(id).then(() =>
+      fetchProducts(page, searchQuery),
     );
+
+    const toastId = toast.loading('Deleting product...');
+
+    promise
+      .then(() =>
+        toast.success('Product deleted successfully!', { id: toastId }),
+      )
+      .catch((err) =>
+        toast.error(err.message || 'Failed to delete product', { id: toastId }),
+      )
+      .finally(() => setDeletingId(null));
+  };
+
+  const handleSave = async () => {
+    setIsEditOpen(false);
+    await fetchProducts(page, searchQuery);
   };
 
   return (
-    <div className="space-y-8">
-      <h2 className="text-2xl font-bold">Manage Products</h2>
+    <div className='space-y-8'>
+      <h2 className='text-2xl font-bold'>Manage Products</h2>
 
-      <AddProductForm />
+      <AddProductForm onSuccess={() => fetchProducts(page, searchQuery)} />
 
       <Card>
-        <CardHeader>
-          <CardTitle>Existing Products</CardTitle>
-          <CardDescription>
-            View and manage all products in your store
-          </CardDescription>
+        <CardHeader className='flex flex-col sm:flex-row sm:items-center justify-between gap-4'>
+          <div>
+            <CardTitle>Existing Products</CardTitle>
+            <CardDescription>
+              View and manage all products in your store
+            </CardDescription>
+          </div>
+          <form
+            onSubmit={handleSearchSubmit}
+            className='relative w-full sm:w-64'
+          >
+            <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
+            <Input
+              type='search'
+              placeholder='Search inventory...'
+              className='pl-9 w-full bg-background'
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
+          </form>
         </CardHeader>
         <CardContent>
-          <ProductsTable products={products} onEdit={handleEdit} />
+          {loading ? (
+            <p className='text-center py-8 text-muted-foreground'>
+              Loading products...
+            </p>
+          ) : products.length === 0 ? (
+            <p className='text-center py-8 text-muted-foreground'>
+              No products yet. Add your first one above!
+            </p>
+          ) : (
+            <>
+              <ProductsTable
+                products={products}
+                onEdit={handleEdit}
+                onDelete={setConfirmDeleteId}
+                deletingId={deletingId}
+                currentPage={page}
+                totalPages={totalPages}
+                totalCount={totalCount}
+                onPageChange={setPage}
+              />
+
+              {/* Delete Confirmation Dialog */}
+              <AlertDialog
+                open={!!confirmDeleteId}
+                onOpenChange={(open) => !open && setConfirmDeleteId(null)}
+              >
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Delete Product?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This will permanently delete &quot;
+                      <strong>
+                        {products.find((p) => p.id === confirmDeleteId)?.name}
+                      </strong>
+                      &quot;. This action cannot be undone.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() =>
+                        confirmDeleteId && handleDelete(confirmDeleteId)
+                      }
+                      className='bg-destructive text-white hover:bg-destructive/90'
+                    >
+                      {deletingId ? (
+                        <>
+                          <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                          Deleting...
+                        </>
+                      ) : (
+                        'Delete Product'
+                      )}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </>
+          )}
         </CardContent>
       </Card>
 
@@ -112,7 +218,7 @@ export default function ProductsPage() {
         product={editProduct}
         open={isEditOpen}
         onOpenChange={setIsEditOpen}
-        onSave={handleSave}
+        onSuccess={() => fetchProducts(page, searchQuery)}
       />
     </div>
   );

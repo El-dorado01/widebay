@@ -16,9 +16,33 @@ export const authOptions: NextAuthOptions = {
   session: { strategy: 'jwt' },
   pages: { signIn: '/login' },
   callbacks: {
+    async signIn({ user }) {
+      if (!user.email) return true;
+
+      const adminEntry = await prisma.adminEmail.findUnique({
+        where: { email: user.email },
+      });
+
+      if (adminEntry) {
+        // Check if user already exists and if role needs updating
+        const existingUser = await prisma.user.findUnique({
+          where: { email: user.email },
+        });
+
+        if (existingUser && existingUser.role !== 'admin') {
+          await prisma.user.update({
+            where: { id: existingUser.id },
+            data: { role: 'admin' },
+          });
+        }
+      }
+
+      return true;
+    },
     async jwt({ token, user }) {
       // Only on first sign-in (user object from DB)
       if (user) {
+        token.id = user.id;
         token.role = (user.role as 'admin' | 'user') || 'user';
       }
       return token;
@@ -26,6 +50,9 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (token.role) {
         session.user.role = token.role as 'admin' | 'user';
+      }
+      if (token.id) {
+        (session.user as any).id = token.id;
       }
       return session;
     },

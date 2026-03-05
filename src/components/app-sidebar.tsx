@@ -19,41 +19,56 @@ import {
   HeartIcon,
   HomeIcon,
   PlaneTakeoff,
+  ShoppingBag,
   ShoppingCartIcon,
 } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-const navMain = [
+const navItems = [
   {
     title: 'Home',
-    url: '/',
+    url: '/dashboard',
     icon: HomeIcon,
-    active: true,
   },
   {
     title: 'All Products',
-    url: '/products',
+    url: '/dashboard/products',
     icon: DroneIcon,
   },
   {
     title: 'My Cart',
-    url: '/cart',
+    url: '/dashboard/cart',
     icon: ShoppingCartIcon,
   },
   {
+    title: 'My Orders',
+    url: '/dashboard/orders',
+    icon: ShoppingBag,
+  },
+  {
     title: 'Saved Items',
-    url: '/saved',
+    url: '/dashboard/saved',
     icon: HeartIcon,
   },
   {
     title: 'Settings',
-    url: '/settings',
+    url: '/dashboard/settings',
     icon: CogIcon,
   },
 ];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data: session, status } = useSession();
+  const pathname = usePathname();
+
+  const itemsWithActiveState = navItems.map((item) => ({
+    ...item,
+    active:
+      item.url === '/dashboard' || item.url === '/'
+        ? pathname === item.url
+        : pathname.startsWith(item.url),
+  }));
 
   // Sidebar header and main nav always render immediately
   return (
@@ -68,9 +83,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenuButton asChild>
               <Link
                 href='/'
-                className='h-10 flex items-center justify-center gap-2'
+                className='h-12 flex items-center justify-center gap-3'
               >
-                <PlaneTakeoff className='size-5' />
+                <PlaneTakeoff className='size-5!' />
                 <span className='text-base font-semibold'>Widebay Drones</span>
               </Link>
             </SidebarMenuButton>
@@ -80,7 +95,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
       {/* Main Navigation - Always visible */}
       <SidebarContent className='mt-5'>
-        <NavMain items={navMain} />
+        <NavMain items={itemsWithActiveState} />
       </SidebarContent>
 
       {/* Footer - Only this part waits for session */}

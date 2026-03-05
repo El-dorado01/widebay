@@ -1,139 +1,105 @@
 // app/admin/featured/page.tsx
-import { Button } from "@/components/ui/button";
+'use client';
+
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
-import { Search, TrendingUp, Percent, Plus, X } from "lucide-react";
+  addTrendingProduct,
+  removeTrendingProduct,
+  addDiscountedProduct,
+  removeDiscountedProduct,
+} from '@/lib/actions';
+import FeaturedSectionCard from '@/components/FeaturedSectionCard';
+
+type FeaturedSection = 'trending' | 'discounted';
+
+type Product = {
+  id: string;
+  name: string;
+  price: number;
+  discountPrice: number | null;
+  imageUrl: string;
+};
 
 export default function FeaturedPage() {
+  const [trending, setTrending] = useState<Product[]>([]);
+  const [discounted, setDiscounted] = useState<Product[]>([]);
+  const [loadingFeatured, setLoadingFeatured] = useState(true);
+
+  const fetchFeatured = async () => {
+    setLoadingFeatured(true);
+    try {
+      const [trendRes, discRes] = await Promise.all([
+        fetch('/api/admin/featured/trending'),
+        fetch('/api/admin/featured/discounted'),
+      ]);
+
+      if (trendRes.ok) setTrending(await trendRes.json());
+      if (discRes.ok) setDiscounted(await discRes.json());
+    } catch {
+      toast.error('Failed to load featured items');
+    } finally {
+      setLoadingFeatured(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchFeatured();
+  }, []);
+
+  const handleAdd = async (productId: string, section: FeaturedSection) => {
+    const action =
+      section === 'trending' ? addTrendingProduct : addDiscountedProduct;
+    const promise = action(productId).then(fetchFeatured);
+
+    toast.promise(promise, {
+      loading: 'Adding to featured...',
+      success: 'Added successfully!',
+      error: 'Failed to add',
+    });
+  };
+
+  const handleRemove = async (productId: string, section: FeaturedSection) => {
+    const action =
+      section === 'trending' ? removeTrendingProduct : removeDiscountedProduct;
+    const promise = action(productId).then(fetchFeatured);
+
+    toast.promise(promise, {
+      loading: 'Removing...',
+      success: 'Removed successfully!',
+      error: 'Failed to remove',
+    });
+  };
+
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Manage Featured Items</h2>
+    <div className='space-y-6 py-4 px-2'>
+      <h2 className='text-2xl font-bold'>Manage Featured Items</h2>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Trending Products */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="h-6 w-6 text-green-600" />
-              Trending Products
-            </CardTitle>
-            <CardDescription>
-              Products shown in the &quot;Trending&quot; section on the homepage
-              (max 8 recommended)
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  placeholder="Search products to add to trending..."
-                  className="pl-10"
-                />
-              </div>
-              <Button>
-                <Plus className="mr-2 h-4 w-4" />
-                Add
-              </Button>
-            </div>
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+        <FeaturedSectionCard
+          title='Trending Products'
+          description="Products shown in the 'Trending' section (max 8 recommended)"
+          icon='🔥'
+          section='trending'
+          featuredProducts={trending}
+          onAdd={handleAdd}
+          onRemove={handleRemove}
+          loading={loadingFeatured}
+          maxRecommended={8}
+        />
 
-            <Separator />
-
-            <div className="space-y-3">
-              <div className="flex items-center justify-between p-3 rounded-lg border bg-card">
-                <div className="flex items-center gap-3">
-                  <div className="bg-gray-200 border-2 border-dashed rounded-lg w-12 h-12" />
-                  <div>
-                    <p className="font-medium">Nike Air Max 270</p>
-                    <p className="text-sm text-muted-foreground">$129.99</p>
-                  </div>
-                </div>
-                <Button size="sm" variant="ghost" className="text-destructive">
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-
-              <div className="flex items-center justify-between p-3 rounded-lg border bg-card">
-                <div className="flex items-center gap-3">
-                  <div className="bg-gray-200 border-2 border-dashed rounded-lg w-12 h-12" />
-                  <div>
-                    <p className="font-medium">Wireless Headphones Pro</p>
-                    <p className="text-sm text-muted-foreground">$199.99</p>
-                  </div>
-                </div>
-                <Button size="sm" variant="ghost" className="text-destructive">
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-
-            <p className="text-sm text-muted-foreground text-center py-4">
-              2 products currently trending
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* Discount Products */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Percent className="h-6 w-6 text-orange-600" />
-              Discount Products
-            </CardTitle>
-            <CardDescription>
-              Products featured in the discount carousel on the homepage
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  placeholder="Search products to feature in discount..."
-                  className="pl-10"
-                />
-              </div>
-              <Button>
-                <Plus className="mr-2 h-4 w-4" />
-                Add
-              </Button>
-            </div>
-
-            <Separator />
-
-            <div className="space-y-3">
-              <div className="flex items-center justify-between p-3 rounded-lg border bg-card">
-                <div className="flex items-center gap-3">
-                  <div className="bg-gray-200 border-2 border-dashed rounded-lg w-12 h-12" />
-                  <div>
-                    <p className="font-medium">Premium Leather Jacket</p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="text-sm text-muted-foreground line-through">
-                        $299.99
-                      </span>
-                      <Badge variant="destructive">$199.99</Badge>
-                    </div>
-                  </div>
-                </div>
-                <Button size="sm" variant="ghost" className="text-destructive">
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-
-            <p className="text-sm text-muted-foreground text-center py-4">
-              1 product currently in discount carousel
-            </p>
-          </CardContent>
-        </Card>
+        <FeaturedSectionCard
+          title='Discount Products'
+          description='Products featured in the discount carousel'
+          icon='🏷️'
+          section='discounted'
+          featuredProducts={discounted}
+          onAdd={handleAdd}
+          onRemove={handleRemove}
+          loading={loadingFeatured}
+          maxRecommended={null}
+          onlyDiscounted={true} // ← ONLY HERE
+        />
       </div>
     </div>
   );

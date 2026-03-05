@@ -89,11 +89,11 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem className='cursor-pointer h-14 focus:text-white'>
+              <DropdownMenuItem className='cursor-pointer h-14'>
                 <UserCircleIcon className='mr-2 size-4.5' />
                 Account
               </DropdownMenuItem>
-              <DropdownMenuItem className='cursor-pointer h-14 focus:text-white'>
+              <DropdownMenuItem className='cursor-pointer h-14'>
                 <BellDotIcon className='mr-2 size-4.5' />
                 Notifications
               </DropdownMenuItem>
@@ -102,9 +102,10 @@ export function NavUser({
             {/* Functional Logout */}
             <DropdownMenuItem
               onSelect={handleLogout}
-              className='cursor-pointer h-14 text-red-600 focus:bg-red-600 focus:text-white'
+              variant='destructive'
+              className='cursor-pointer h-14'
             >
-              <LogOutIcon className='mr-2 size-4.5 text-red-600' />
+              <LogOutIcon className='mr-2 size-4.5' />
               Log out
             </DropdownMenuItem>
           </DropdownMenuContent>
